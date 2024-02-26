@@ -30,7 +30,7 @@ class LottoTest {
     @Test
     fun `the numbers in a game should be between 1 and 45`() {
         val lotto = Lotto()
-        //run 100 games
+        //create 100 games
         for(i in 0..<100){
             val game = lotto.createGame()
             for (num in game){
@@ -42,12 +42,22 @@ class LottoTest {
     @Test
     fun `there should be no duplicate numbers in a game`() {
         val lotto = Lotto()
-        //run 100 games
+        //create 100 games
+        for(i in 0..<100){
+            val game = lotto.createGame()
+            val set = game.toHashSet()
+            assertTrue(set.size == game.size)
+        }
+    }
+
+    @Test
+    fun `the numbers in a game should be in increasing order`() {
+        val lotto = Lotto()
+        //create 100 games
         for(i in 0..<100){
             val game = lotto.createGame()
             for(j in 0..<game.size-1){
-                val set = game.toHashSet()
-                assertTrue(set.size == game.size)
+                assertTrue(game[j] < game[j+1])
             }
         }
     }

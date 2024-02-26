@@ -20,6 +20,8 @@ class Lotto {
             it + LottoConstants.GAME_NUMBER_MIN
         }
         candidates.shuffle()
-        return candidates.slice(0..<LottoConstants.GAME_SIZE)
+        return candidates
+            .slice(0..<LottoConstants.GAME_SIZE)
+            .sorted()
     }
 }
