@@ -15,14 +15,39 @@ class PasswordValidationTest {
     }
 
     @Test
-    public void inputLengthOverThan8AndNotIncludeNumber(){
+    public void notIncludeNumber(){
         String input="abcdefgh";
         assertThrows(IllegalArgumentException.class, ()->passwordValidation.isValid(input));
     }
 
     @Test
-    public void inputLengthOverThan8AndIncludeNumber(){
+    public void includeNumber(){
         String input="123456789asdf";
+        assertThrows(IllegalArgumentException.class, ()->passwordValidation.isValid(input));
+    }
+
+    @Test
+    public void includeNumberAndNotIncludeCapitalLetter(){
+        String input="123456789asdfa";
+        assertThrows(IllegalArgumentException.class, ()->passwordValidation.isValid(input));
+    }
+
+    @Test
+    public void includeNumberAndCapitalLetter(){
+        String input="123456789asdfA";
+        assertThrows(IllegalArgumentException.class, ()->passwordValidation.isValid(input));
+    }
+
+
+    @Test
+    public void includeNumberAndCapitalLetterNotSpecialCharacter(){
+        String input="123456789asdfa";
+        assertThrows(IllegalArgumentException.class, ()->passwordValidation.isValid(input));
+    }
+
+    @Test
+    public void includeNumberAndCapitalLetterAndSpecialCharacter(){
+        String input="123456789asdfA!";
         boolean result = passwordValidation.isValid(input);
         assertThat(result).isEqualTo(true);
     }
