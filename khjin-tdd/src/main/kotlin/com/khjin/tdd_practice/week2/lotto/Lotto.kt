@@ -3,6 +3,8 @@ package com.khjin.tdd_practice.week2.lotto
 import com.khjin.tdd_practice.week2.lotto.exception.InsufficientMoneyException
 import com.khjin.tdd_practice.week2.lotto.exception.InvalidWinnerInputException
 import java.lang.NumberFormatException
+import kotlin.math.floor
+import kotlin.math.round
 
 class Lotto {
     fun purchaseGames(price: Int, money: Int): List<List<Int>> {
@@ -44,5 +46,42 @@ class Lotto {
             return result
         }catch(nfe: NumberFormatException) {
             throw InvalidWinnerInputException("유효하지 않은 당첨 번호입니다.\n당첨 번호는 쉼표로 구분된 숫자로만 입력해야 합니다.")        }
+    }
+
+    fun matchNumbers(winningNumbers: List<Int>, game: List<Int>): Int{
+        var result = 0
+        for(num in game)
+            if (winningNumbers.contains(num))
+                result++
+
+        return result
+    }
+
+    fun runGames(winningNumbers: List<Int>, gameSet: List<List<Int>>): IntArray {
+        val result = IntArray(LottoConstants.GAME_SIZE+1)
+
+        for (game in gameSet){
+            result[matchNumbers(winningNumbers, game)]++
+        }
+
+        return result
+    }
+
+    fun calculatePrizeMoney(gameResult: IntArray): Int {
+        var result = 0
+        for(unmatched in (0..<4)){
+            val wonGames = gameResult[LottoConstants.GAME_SIZE - unmatched]
+            when(unmatched){
+                0 -> result += wonGames * LottoConstants.FIRST_PRIZE_MONEY
+                1 -> result += wonGames * LottoConstants.SECOND_PRIZE_MONEY
+                2 -> result += wonGames * LottoConstants.THIRD_PRIZE_MONEY
+                else -> result += wonGames * LottoConstants.FOURTH_PRIZE_MONEY
+            }
+        }
+        return result
+    }
+
+    fun calculateProfitRate(purchase: Int, prize: Int): Double {
+        return floor((prize-purchase).toDouble() / purchase.toDouble()*100) / 100
     }
 }

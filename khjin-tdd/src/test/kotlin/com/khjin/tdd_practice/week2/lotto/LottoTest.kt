@@ -96,4 +96,55 @@ class LottoTest {
             lotto.parseWinnerInput("1,2,3,4")
         }
     }
+
+    @Test
+    fun `the number of numbers matching the winning numbers should be returned when a game is run`() {
+        val lotto = Lotto()
+        val winningNumbers = listOf(1, 2, 3, 4, 5, 6)
+        assertEquals(3, lotto.matchNumbers(winningNumbers, listOf(1, 2, 3, 10, 20, 30)))
+        assertEquals(4, lotto.matchNumbers(winningNumbers, listOf(3, 4, 4, 6, 10, 20)))
+    }
+
+    @Test
+    fun `the number of matches for the set of games should be returned`() {
+        val lotto = Lotto()
+        val winningNumbers = listOf(1,2,3,4,5,6)
+        val gameSet = listOf(
+            listOf(1, 2, 3, 4, 5, 6),
+            listOf(1, 2, 3, 4, 5, 38),
+            listOf(2, 3, 4, 5, 6, 44),
+            listOf(1, 2, 3, 4, 41, 42),
+            listOf(1, 3, 4, 5, 42, 45),
+            listOf(3, 4, 5, 6, 42, 43),
+            listOf(1, 2, 3, 32, 38, 45),
+            listOf(1, 2, 3, 36, 39, 41),
+            listOf(1, 3, 5, 14, 22, 45),
+            listOf(1, 6, 38, 41, 43, 44),
+            listOf(2, 8, 9, 18, 19, 21),
+            listOf(13, 14, 18, 21, 23, 35),
+            listOf(17, 21, 29, 37, 42, 45),
+            listOf(7, 8, 27, 30, 35, 44),
+        )
+        val gamesResult = lotto.runGames(winningNumbers, gameSet)
+        assertEquals(1, gamesResult[6])
+        assertEquals(2, gamesResult[5])
+        assertEquals(3, gamesResult[4])
+        assertEquals(3, gamesResult[3])
+        assertEquals(1, gamesResult[2])
+        assertEquals(1, gamesResult[1])
+        assertEquals(3, gamesResult[0])
+    }
+
+    @Test
+    fun `the final prize money for the given game result should be returned`() {
+        val lotto = Lotto()
+        assertEquals(2_000_050_000, lotto.calculatePrizeMoney(intArrayOf(0,10,4,0,1,0,1)))
+        assertEquals(5000, lotto.calculatePrizeMoney(intArrayOf(1,2,4,1,0,0,0)))
+    }
+
+    @Test
+    fun `profit rate for the games should be returned for given set of games`() {
+        val lotto = Lotto()
+        assertEquals(-0.65, lotto.calculateProfitRate(purchase = 14000, prize=5000))
+    }
 }
