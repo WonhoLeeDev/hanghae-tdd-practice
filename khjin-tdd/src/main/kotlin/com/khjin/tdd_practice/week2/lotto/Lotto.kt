@@ -10,14 +10,16 @@ class Lotto {
             throw InsufficientMoneyException("돈이 충분하지 않습니다")
 
         for(i in 0..<money/price){
-            result.add(this.runGame())
+            result.add(this.createGame())
         }
         return result
     }
 
-    fun runGame(): List<Int> {
-        val candidates = IntArray(45) {it + 1}
+    fun createGame(): List<Int> {
+        val candidates = IntArray(LottoConstants.GAME_NUMBER_MAX - LottoConstants.GAME_NUMBER_MIN) {
+            it + LottoConstants.GAME_NUMBER_MIN
+        }
         candidates.shuffle()
-        return candidates.slice(0..5)
+        return candidates.slice(0..<LottoConstants.GAME_SIZE)
     }
 }

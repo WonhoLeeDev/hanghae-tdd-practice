@@ -24,7 +24,7 @@ class LottoTest {
     @Test
     fun `a game should be a list of six random numbers`() {
         val lotto = Lotto()
-        assertEquals(6, lotto.runGame().size)
+        assertEquals(LottoConstants.GAME_SIZE, lotto.createGame().size)
     }
 
     @Test
@@ -32,19 +32,19 @@ class LottoTest {
         val lotto = Lotto()
         //run 100 games
         for(i in 0..<100){
-            val game = lotto.runGame()
+            val game = lotto.createGame()
             for (num in game){
-                assertTrue(num in 1..45)
+                assertTrue(num in LottoConstants.GAME_NUMBER_MIN..LottoConstants.GAME_NUMBER_MAX)
             }
         }
     }
 
     @Test
-    fun `there should be no duplicates in a game`() {
+    fun `there should be no duplicate numbers in a game`() {
         val lotto = Lotto()
         //run 100 games
         for(i in 0..<100){
-            val game = lotto.runGame()
+            val game = lotto.createGame()
             for(j in 0..<game.size-1){
                 val set = game.toHashSet()
                 assertTrue(set.size == game.size)
