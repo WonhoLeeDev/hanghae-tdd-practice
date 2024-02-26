@@ -6,4 +6,5 @@ object LottoConstants {
     const val GAME_NUMBER_MIN = 1
     const val GAME_NUMBER_MAX = 45
     const val GAME_SIZE = 6
+    const val INPUT_DELIMITER = ','
 }

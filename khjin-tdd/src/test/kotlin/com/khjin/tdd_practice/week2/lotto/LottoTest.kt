@@ -1,6 +1,7 @@
 package com.khjin.tdd_practice.week2.lotto
 
 import com.khjin.tdd_practice.week2.lotto.exception.InsufficientMoneyException
+import com.khjin.tdd_practice.week2.lotto.exception.InvalidWinnerInputException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -59,6 +60,40 @@ class LottoTest {
             for(j in 0..<game.size-1){
                 assertTrue(game[j] < game[j+1])
             }
+        }
+    }
+
+    @Test
+    fun `the winner input should be a string of numbers delimited with commas`() {
+        val lotto = Lotto()
+        assertEquals(listOf(1,2,3,4,5,6), lotto.parseWinnerInput("1, 2, 3, 4, 5, 6"))
+        assertThrows(InvalidWinnerInputException::class.java){
+            lotto.parseWinnerInput("1,rr,2,5,1f")
+        }
+        assertThrows(InvalidWinnerInputException::class.java){
+            lotto.parseWinnerInput("1|2|3|4|5|6")
+        }
+    }
+
+    @Test
+    fun `the winning numbers should be between 1 and 45`() {
+        val lotto = Lotto()
+        assertThrows(InvalidWinnerInputException::class.java){
+            lotto.parseWinnerInput("1,56,2,5,24,45")
+        }
+        assertThrows(InvalidWinnerInputException::class.java){
+            lotto.parseWinnerInput("0,40,2,11,24,45")
+        }
+    }
+
+    @Test
+    fun `the size of the winning numbers list should be exactly 6`() {
+        val lotto = Lotto()
+        assertThrows(InvalidWinnerInputException::class.java){
+           lotto.parseWinnerInput("1,2,3,4,5,6,7")
+        }
+        assertThrows(InvalidWinnerInputException::class.java){
+            lotto.parseWinnerInput("1,2,3,4")
         }
     }
 }

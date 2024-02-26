@@ -10,4 +10,6 @@ fun main() {
     for(game in games){
         println(game)
     }
+    println("지난주 당첨번호를 입력하세요")
+    println(lotto.parseWinnerInput(readln()))
 }
