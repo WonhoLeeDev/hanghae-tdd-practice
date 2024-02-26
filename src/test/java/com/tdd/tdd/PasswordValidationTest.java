@@ -15,10 +15,15 @@ class PasswordValidationTest {
     }
 
     @Test
-    public void inputLengthOverThan8(){
-        String input="123456789";
+    public void inputLengthOverThan8AndNotIncludeNumber(){
+        String input="abcdefgh";
+        assertThrows(IllegalArgumentException.class, ()->passwordValidation.isValid(input));
+    }
+
+    @Test
+    public void inputLengthOverThan8AndIncludeNumber(){
+        String input="123456789asdf";
         boolean result = passwordValidation.isValid(input);
         assertThat(result).isEqualTo(true);
     }
-
 }
