@@ -13,13 +13,16 @@ class PasswordValidator {
 
         var numCount = 0
         var capitalLetterFlag = false
-        for (c in password.toCharArray()){
-            if(c.isDigit()){
+        var specialLetterFlag = false
+        for ( c in password.toCharArray() ){
+            if(c.isDigit())
                 numCount++
-            }
-            if( !capitalLetterFlag && c.isUpperCase()){
+
+            if( !capitalLetterFlag && c.isUpperCase() )
                 capitalLetterFlag = true
-            }
+
+            if( !specialLetterFlag && !c.isLetterOrDigit() )
+                specialLetterFlag = true
         }
 
         if( numCount < 2 ){
@@ -30,6 +33,11 @@ class PasswordValidator {
         if( !capitalLetterFlag ){
             if(errorMessage.isNotEmpty())   errorMessage.append("\n")
             errorMessage.append("password must contain at least one capital letter")
+        }
+
+        if( !specialLetterFlag ){
+            if(errorMessage.isNotEmpty())   errorMessage.append("\n")
+            errorMessage.append("password must contain at least one special character")
         }
 
         if(errorMessage.isNotEmpty())
