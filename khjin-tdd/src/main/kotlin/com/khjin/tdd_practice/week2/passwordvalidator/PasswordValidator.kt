@@ -12,15 +12,24 @@ class PasswordValidator {
         }
 
         var numCount = 0
+        var capitalLetterFlag = false
         for (c in password.toCharArray()){
             if(c.isDigit()){
                 numCount++
+            }
+            if( !capitalLetterFlag && c.isUpperCase()){
+                capitalLetterFlag = true
             }
         }
 
         if( numCount < 2 ){
             if(errorMessage.isNotEmpty())   errorMessage.append("\n")
             errorMessage.append("The password must contain at least 2 numbers")
+        }
+
+        if( !capitalLetterFlag ){
+            if(errorMessage.isNotEmpty())   errorMessage.append("\n")
+            errorMessage.append("password must contain at least one capital letter")
         }
 
         if(errorMessage.isNotEmpty())

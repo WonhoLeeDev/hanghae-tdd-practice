@@ -8,7 +8,7 @@ import kotlin.test.assertTrue
 class PasswordValidatorTest {
 
     private val passwordValidator = PasswordValidator()
-    private val validPassword = "password1234"
+    private val validPassword = "Password1234"
 
     @Test
     fun `password must be at least 8 characters long`() {
@@ -17,7 +17,6 @@ class PasswordValidatorTest {
         try{
             passwordValidator.validate("aaaaa")
         }catch(e:InvalidPasswordException){
-            println(e.localizedMessage)
             testMessage = e.localizedMessage
         }
         assertEquals(targetMessage, testMessage)
@@ -34,7 +33,6 @@ class PasswordValidatorTest {
         try{
             passwordValidator.validate("aaaaaaaaa1")
         }catch(e:InvalidPasswordException){
-            println(e.localizedMessage)
             testMessage = e.localizedMessage
         }
         assertEquals(targetMessage, testMessage)
@@ -50,10 +48,31 @@ class PasswordValidatorTest {
         try{
             passwordValidator.validate("aaaaaa")
         }catch(e:InvalidPasswordException){
-            println(e.localizedMessage)
             testMessage = e.localizedMessage
         }
         assertEquals(targetMessage, testMessage)
+        assertTrue(passwordValidator.validate(validPassword))
+    }
+
+    @Test
+    fun `The password must contain at least one capital letter`() {
+        val targetMessage = "password must contain at least one capital letter"
+        var testMessage = ""
+        try{
+            passwordValidator.validate("aaaaaa1234")
+        }catch(e:InvalidPasswordException){
+            testMessage = e.localizedMessage
+        }
+        assertEquals(targetMessage, testMessage)
+
+        val targetMessage2 = "The password must contain at least 2 numbers\npassword must contain at least one capital letter"
+        try{
+            passwordValidator.validate("aaaaaabbbb")
+        }catch(e:InvalidPasswordException){
+            testMessage = e.localizedMessage
+        }
+        assertEquals(targetMessage2, testMessage)
+
         assertTrue(passwordValidator.validate(validPassword))
     }
 }
