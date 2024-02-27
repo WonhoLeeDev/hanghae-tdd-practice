@@ -2,7 +2,7 @@ package com.khjin.tdd_practice.week2.passwordvalidator
 
 import com.khjin.tdd_practice.week2.passwordvalidator.exception.InvalidPasswordException
 import org.junit.jupiter.api.Test
-import kotlin.test.assertFailsWith
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class PasswordValidatorTest {
@@ -12,25 +12,48 @@ class PasswordValidatorTest {
 
     @Test
     fun `password must be at least 8 characters long`() {
-        assertFailsWith<InvalidPasswordException>(
-            message = "Password must be at least 8 characters",
-            block = {
-                passwordValidator.validate("aaaa")
-            }
-        )
+        val targetMessage = "Password must be at least 8 characters"
+        var testMessage = ""
+        try{
+            passwordValidator.validate("aaaaa")
+        }catch(e:InvalidPasswordException){
+            println(e.localizedMessage)
+            testMessage = e.localizedMessage
+        }
+        assertEquals(targetMessage, testMessage)
+
         assertTrue(passwordValidator.validate(validPassword))
     }
 
 
     @Test
     fun `password must contain at least 2 numbers`() {
-        assertFailsWith<InvalidPasswordException>(
-            message = "The password must contain at least 2 numbers",
-            block = {
-                passwordValidator.validate("aaaaaaaa1")
-            }
-        )
+
+        val targetMessage = "The password must contain at least 2 numbers"
+        var testMessage = ""
+        try{
+            passwordValidator.validate("aaaaaaaaa1")
+        }catch(e:InvalidPasswordException){
+            println(e.localizedMessage)
+            testMessage = e.localizedMessage
+        }
+        assertEquals(targetMessage, testMessage)
+
         assertTrue(passwordValidator.validate(validPassword))
     }
 
+    @Test
+    fun `validation function should handle multiple validation errors`() {
+
+        val targetMessage = "Password must be at least 8 characters\nThe password must contain at least 2 numbers"
+        var testMessage = ""
+        try{
+            passwordValidator.validate("aaaaaa")
+        }catch(e:InvalidPasswordException){
+            println(e.localizedMessage)
+            testMessage = e.localizedMessage
+        }
+        assertEquals(targetMessage, testMessage)
+        assertTrue(passwordValidator.validate(validPassword))
+    }
 }

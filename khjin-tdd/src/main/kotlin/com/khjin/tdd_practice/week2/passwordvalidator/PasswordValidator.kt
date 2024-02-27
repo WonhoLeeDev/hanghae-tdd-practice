@@ -5,8 +5,10 @@ import com.khjin.tdd_practice.week2.passwordvalidator.exception.InvalidPasswordE
 class PasswordValidator {
 
     fun validate(password: String): Boolean{
+        val errorMessage = StringBuilder()
+
         if(password.length < 8){
-            throw InvalidPasswordException("Password must be at least 8 characters")
+            errorMessage.append("Password must be at least 8 characters")
         }
 
         var numCount = 0
@@ -16,8 +18,13 @@ class PasswordValidator {
             }
         }
 
-        if( numCount < 2 )
-            throw InvalidPasswordException("The password must contain at least 2 numbers")
+        if( numCount < 2 ){
+            if(errorMessage.isNotEmpty())   errorMessage.append("\n")
+            errorMessage.append("The password must contain at least 2 numbers")
+        }
+
+        if(errorMessage.isNotEmpty())
+            throw InvalidPasswordException(errorMessage.toString())
 
         return true
     }
