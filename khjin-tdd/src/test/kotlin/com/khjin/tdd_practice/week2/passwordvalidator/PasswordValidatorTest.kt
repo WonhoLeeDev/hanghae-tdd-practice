@@ -7,15 +7,30 @@ import kotlin.test.assertTrue
 
 class PasswordValidatorTest {
 
+    private val passwordValidator = PasswordValidator()
+    private val validPassword = "password1234"
+
     @Test
     fun `password must be at least 8 characters long`() {
-        val passwordValidator = PasswordValidator()
         assertFailsWith<InvalidPasswordException>(
             message = "Password must be at least 8 characters",
             block = {
                 passwordValidator.validate("aaaa")
             }
         )
-        assertTrue(passwordValidator.validate("password1234"))
+        assertTrue(passwordValidator.validate(validPassword))
     }
+
+
+    @Test
+    fun `password must contain at least 2 numbers`() {
+        assertFailsWith<InvalidPasswordException>(
+            message = "The password must contain at least 2 numbers",
+            block = {
+                passwordValidator.validate("aaaaaaaa1")
+            }
+        )
+        assertTrue(passwordValidator.validate(validPassword))
+    }
+
 }
