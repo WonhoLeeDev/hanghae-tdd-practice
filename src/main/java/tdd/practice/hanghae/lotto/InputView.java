@@ -11,16 +11,14 @@ public class InputView {
         int money = sc.nextInt();
         Lotto lotto = new Lotto(money);
         lotto.buyLotto();
-        System.out.println(lotto.getBuyCount() + "개를 구매했습니다.");
 
-        lotto.printBoughtLottoList();
+        ResultView resultView = new ResultView(lotto);
+        resultView.getBuyCount();
+        resultView.getBoughtLottoList();
         sc.nextLine();
 
         System.out.println("지난 주 당첨 번호를 입력해 주세요.");
-        String[] winningLottoNumbers = getEachInputNumbers(sc.nextLine());
-
-        ResultView resultView = new ResultView(lotto, winningLottoNumbers);
-        resultView.showLottoResult();
+        resultView.getLottoWinningResult(getEachInputNumbers(sc.nextLine()));
     }
 
     private static String[] getEachInputNumbers(String inputWinningLottoNumbers) {

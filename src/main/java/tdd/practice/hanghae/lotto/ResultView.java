@@ -10,12 +10,12 @@ public class ResultView {
     private Lotto lotto;
     private String[] winningLottoNumbers;
 
-    public ResultView(Lotto lotto, String[] winningLottoNumbers) {
+    public ResultView(Lotto lotto) {
         this.lotto = lotto;
-        this.winningLottoNumbers = winningLottoNumbers;
     }
 
-    public void showLottoResult() {
+    public void getLottoWinningResult(String[] winningLottoNumbers) {
+        this.winningLottoNumbers = winningLottoNumbers;
         System.out.println("총 수익률은 " + getPrizeMoney()/lotto.getBuyMoney() + "입니다.");
     }
 
@@ -68,5 +68,15 @@ public class ResultView {
             };
         }
         return matchCount;
+    }
+
+    public void getBuyCount() {
+        System.out.println(this.lotto.getBuyCount() + "개를 구매했습니다.");
+    }
+
+    public void getBoughtLottoList() {
+        for (List<Integer> integers : this.lotto.getBoughtLottoList()) {
+            System.out.println(integers);
+        }
     }
 }
