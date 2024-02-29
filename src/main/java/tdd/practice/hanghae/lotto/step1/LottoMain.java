@@ -1,6 +1,4 @@
-package tdd.practice.hanghae.lotto;
-
-import java.util.*;
+package tdd.practice.hanghae.lotto.step1;
 
 public class LottoMain {
 
