@@ -15,24 +15,22 @@ public class Lotto {
     }
 
     public List<List<Integer>> generateRandomLottoNumbers(int buyCount) {
-        List<Integer> lottoNumbers = generateLottoNumbers();
-
         List<List<Integer>> boughtLottoList = new ArrayList<>();
         for(int i = 0; i< buyCount; i++) {
-            List<Integer> randomLottoNumbers = getShuffledRandomLottoNumbers(lottoNumbers);
+            List<Integer> randomLottoNumbers = getShuffledRandomLottoNumbers();
             boughtLottoList.add(randomLottoNumbers);
         }
         return boughtLottoList;
     }
 
-    private static List<Integer> getShuffledRandomLottoNumbers(List<Integer> lottoNumbers) {
-        Collections.shuffle(lottoNumbers);
-        List<Integer> randomLottoNumbers = lottoNumbers.subList(0, 6);
+    public static List<Integer> getShuffledRandomLottoNumbers() {
+        Collections.shuffle(generateLottoNumbers());
+        List<Integer> randomLottoNumbers = generateLottoNumbers().subList(0, 6);
         Collections.sort(randomLottoNumbers);
         return randomLottoNumbers;
     }
 
-    private static List<Integer> generateLottoNumbers() {
+    public static List<Integer> generateLottoNumbers() {
         List<Integer> lottoNumbers = new ArrayList<>();
         for(int i=1; i<46; i++) {
             lottoNumbers.add(i);
@@ -46,5 +44,9 @@ public class Lotto {
 
     public int getLottoPrice() {
         return this.LOTTO_PRICE;
+    }
+
+    public int getLottoNumbersMatchCount(List<Integer> boughtLotto, List<Integer> winningNumbers) {
+        return 0;
     }
 }

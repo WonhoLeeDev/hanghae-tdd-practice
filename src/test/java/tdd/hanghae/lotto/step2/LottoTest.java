@@ -11,22 +11,31 @@ import java.util.Scanner;
 
 public class LottoTest {
 
-    private int buyAmount = 5000;
+    int buyAmount = 5000;
+    Lotto lotto = new Lotto(buyAmount);
+    int buyCount = lotto.getLottoBuyCountByBuyAmount(buyAmount);
+
     @Test
     @DisplayName("get lotto buy count by buy amount")
     void getLottoCountByBuyAmountTest() {
-        Lotto lotto = new Lotto(buyAmount);
-        int buyCount = lotto.getLottoBuyCountByBuyAmount(buyAmount);
         Assertions.assertThat(buyCount).isEqualTo(buyAmount/lotto.getLottoPrice());
     }
 
     @Test
     @DisplayName("get random lotto numbers list by lotto buy count.")
     void getLottoNumbersListTest() {
-        Lotto lotto = new Lotto(buyAmount);
-        int buyCount = lotto.getLottoBuyCountByBuyAmount(buyAmount);
         List<List<Integer>> lottoBuyList = lotto.generateRandomLottoNumbers(buyCount);
         Assertions.assertThat(lottoBuyList).size().isEqualTo(buyCount);
+    }
+
+    @Test
+    @DisplayName("count matched lotto numbers with winning numbers")
+    void getLottoNumbersMatchCountTest() {
+        List<List<Integer>> boughtLottoList = lotto.generateRandomLottoNumbers(buyCount);
+        List<Integer> winningNumbers = Lotto.getShuffledRandomLottoNumbers();
+        int matchCount = lotto.getLottoNumbersMatchCount(boughtLottoList.get(0), winningNumbers);
+        System.out.println("matchCount :"+matchCount);
+        Assertions.assertThat(matchCount).isBetween(0,6);
     }
 
 }
