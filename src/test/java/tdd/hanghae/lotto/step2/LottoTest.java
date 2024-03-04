@@ -13,25 +13,23 @@ public class LottoTest {
 
     int buyAmount = 5000;
     Lotto lotto = new Lotto(buyAmount);
-    int buyCount = lotto.getLottoBuyCountByBuyAmount(buyAmount);
-
     @Test
     @DisplayName("get lotto buy count by buy amount")
     void getLottoCountByBuyAmountTest() {
-        Assertions.assertThat(buyCount).isEqualTo(buyAmount/lotto.getLottoPrice());
+        Assertions.assertThat(lotto.getBuyCount()).isEqualTo(buyAmount/lotto.getLottoPrice());
     }
 
     @Test
     @DisplayName("get random lotto numbers list by lotto buy count.")
     void getLottoNumbersListTest() {
-        List<List<Integer>> lottoBuyList = lotto.generateRandomLottoNumbers(buyCount);
-        Assertions.assertThat(lottoBuyList).size().isEqualTo(buyCount);
+        List<List<Integer>> lottoBuyList = lotto.generateRandomLottoNumbers();
+        Assertions.assertThat(lottoBuyList).size().isEqualTo(lotto.getBuyCount());
     }
 
     @Test
     @DisplayName("count matched lotto numbers with winning numbers")
     void getLottoNumbersMatchCountTest() {
-        List<List<Integer>> boughtLottoList = lotto.generateRandomLottoNumbers(buyCount);
+        List<List<Integer>> boughtLottoList = lotto.generateRandomLottoNumbers();
         List<Integer> winningNumbers = Lotto.getShuffledRandomLottoNumbers();
         int matchCount = lotto.getLottoNumbersMatchCount(boughtLottoList.get(0), winningNumbers);
         System.out.println("matchCount :"+matchCount);

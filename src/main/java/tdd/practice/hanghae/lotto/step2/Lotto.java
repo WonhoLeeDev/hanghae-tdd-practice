@@ -13,14 +13,24 @@ public class Lotto {
 
     int buyAmount;
 
+    int buyCount;
+
     public Lotto(int buyAmount) {
         this.buyAmount = buyAmount;
-
+        this.buyCount = setLottoBuyCountByBuyAmount();
     }
 
-    public List<List<Integer>> generateRandomLottoNumbers(int buyCount) {
+    public int getBuyAmount() {
+        return buyAmount;
+    }
+
+    public int getBuyCount() {
+        return buyCount;
+    }
+
+    public List<List<Integer>> generateRandomLottoNumbers() {
         List<List<Integer>> boughtLottoList = new ArrayList<>();
-        IntStream.range(0, buyCount)
+        IntStream.range(0, this.buyCount)
                 .mapToObj(i -> getShuffledRandomLottoNumbers())
                 .forEach(boughtLottoList::add);
         System.out.println(boughtLottoList);
@@ -39,8 +49,8 @@ public class Lotto {
         return IntStream.rangeClosed(1, 45).boxed().collect(Collectors.toList());
     }
 
-    public int getLottoBuyCountByBuyAmount(int buyAmount) {
-        return buyAmount/this.LOTTO_PRICE;
+    public int setLottoBuyCountByBuyAmount() {
+        return this.buyAmount/this.LOTTO_PRICE;
     }
 
     public int getLottoPrice() {
