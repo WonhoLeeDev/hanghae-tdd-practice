@@ -1,23 +1,29 @@
 package tdd.hanghae.lotto.step2;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tdd.practice.hanghae.lotto.step2.Lotto;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.Predicate;
 
 public class LottoTest {
 
-    int buyAmount = 7000;
-    Lotto lotto = new Lotto(buyAmount);
+    private static Lotto lotto;
+
+    @BeforeAll
+    static void setUp() {
+        int buyAmount = 7000;
+        lotto = new Lotto(buyAmount);
+    }
+
     @Test
     @DisplayName("get lotto buy count by buy amount")
     void getLottoCountByBuyAmountTest() {
-        Assertions.assertThat(lotto.getBuyCount()).isEqualTo(buyAmount/lotto.getLottoPrice());
+        Assertions.assertThat(lotto.getBuyCount()).isEqualTo(lotto.getBuyAmount()/lotto.getLottoPrice());
     }
 
     @Test
@@ -37,6 +43,7 @@ public class LottoTest {
         List<Integer> matchWinningNumbers = lotto.getBoughtLottoList().get(0).stream()
                         .filter(boughtLotto -> lotto.getWinningNumbers().stream().anyMatch(Predicate.isEqual(boughtLotto)))
                         .toList();
+
         Assertions.assertThat(matchWinningNumbers.containsAll(matchedNumbers)).isTrue();
     }
 
