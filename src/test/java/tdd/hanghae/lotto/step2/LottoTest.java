@@ -8,10 +8,11 @@ import tdd.practice.hanghae.lotto.step2.Lotto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 public class LottoTest {
 
-    int buyAmount = 5000;
+    int buyAmount = 7000;
     Lotto lotto = new Lotto(buyAmount);
     @Test
     @DisplayName("get lotto buy count by buy amount")
@@ -27,13 +28,25 @@ public class LottoTest {
     }
 
     @Test
-    @DisplayName("count matched lotto numbers with winning numbers")
-    void getLottoNumbersMatchCountTest() {
-        List<List<Integer>> boughtLottoList = lotto.generateRandomLottoNumbers();
-        List<Integer> winningNumbers = Lotto.getShuffledRandomLottoNumbers();
-        int matchCount = lotto.getLottoNumbersMatchCount(boughtLottoList.get(0), winningNumbers);
-        System.out.println("matchCount :"+matchCount);
-        Assertions.assertThat(matchCount).isBetween(0,6);
+    @DisplayName("match lotto numbers with winning numbers")
+    void matchWinningNumbersTest() {
+        lotto.buy();
+        lotto.setWinningNumbers(Lotto.getShuffledRandomLottoNumbers());
+        List<Integer> matchedNumbers = lotto.matchWinningNumbers(lotto.getBoughtLottoList().get(0));
+
+        List<Integer> matchWinningNumbers = lotto.getBoughtLottoList().get(0).stream()
+                        .filter(boughtLotto -> lotto.getWinningNumbers().stream().anyMatch(Predicate.isEqual(boughtLotto)))
+                        .toList();
+        Assertions.assertThat(matchWinningNumbers.containsAll(matchedNumbers)).isTrue();
+    }
+
+    @Test
+    @DisplayName("get winning numbers match result")
+    void setWinningResultTest() {
+        lotto.buy();
+        lotto.setWinningNumbers(Lotto.getShuffledRandomLottoNumbers());
+        lotto.setWinningResult();
+        Assertions.assertThat(lotto.getWinningResult().size()).isEqualTo(lotto.getBuyCount());
     }
 
 }
