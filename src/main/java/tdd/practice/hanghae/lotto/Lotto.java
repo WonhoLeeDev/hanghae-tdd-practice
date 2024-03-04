@@ -1,4 +1,4 @@
-package tdd.practice.hanghae.lotto.step2;
+package tdd.practice.hanghae.lotto;
 
 import java.util.ArrayList;
 import java.util.Collections;

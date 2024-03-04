@@ -1,11 +1,10 @@
-package tdd.hanghae.lotto.step2;
+package tdd.hanghae.lotto;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import tdd.practice.hanghae.lotto.step2.Lotto;
+import tdd.practice.hanghae.lotto.Lotto;
 
 import java.util.List;
 import java.util.function.Predicate;
