@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tdd.practice.hanghae.lotto.Lotto;
+import tdd.practice.hanghae.lotto.Rank;
 
 import java.util.List;
 import java.util.function.Predicate;
