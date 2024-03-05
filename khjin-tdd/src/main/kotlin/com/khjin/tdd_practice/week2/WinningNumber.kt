@@ -1,6 +1,6 @@
 package com.khjin.tdd_practice.week2
 
-import com.khjin.tdd_practice.week2.lotto.LottoConstants
+import com.khjin.tdd_practice.week2.lotto.constants.LottoConstants
 import com.khjin.tdd_practice.week2.lotto.LottoValidator
 
 class WinningNumber {

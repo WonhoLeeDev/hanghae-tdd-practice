@@ -1,5 +1,7 @@
 package com.khjin.tdd_practice.week2.lotto
 
+import com.khjin.tdd_practice.week2.lotto.constants.LottoConstants
+
 class LottoUI {
     fun moneyInput(): Int {
         println("구매금액을 입력해 주세요")
@@ -34,6 +36,11 @@ class LottoUI {
 
     fun printProfitRate(profitRate: Double) {
         println("총 수익률은 ${(profitRate * 100).toInt()}% 입니다.")
+    }
+
+    fun bonusNumberInput(): Int {
+        println("보너스 볼을 입력해주세요")
+        return readln().toInt()
     }
 
 }

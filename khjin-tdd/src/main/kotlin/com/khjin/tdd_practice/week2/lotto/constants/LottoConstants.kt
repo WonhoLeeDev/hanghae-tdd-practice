@@ -1,4 +1,4 @@
-package com.khjin.tdd_practice.week2.lotto
+package com.khjin.tdd_practice.week2.lotto.constants
 
 object LottoConstants {
 

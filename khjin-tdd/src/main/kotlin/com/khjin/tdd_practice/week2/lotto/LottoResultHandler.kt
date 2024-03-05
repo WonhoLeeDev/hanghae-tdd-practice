@@ -1,5 +1,6 @@
 package com.khjin.tdd_practice.week2.lotto
 
+import com.khjin.tdd_practice.week2.lotto.constants.LottoConstants
 import kotlin.math.floor
 
 class LottoResultHandler {
