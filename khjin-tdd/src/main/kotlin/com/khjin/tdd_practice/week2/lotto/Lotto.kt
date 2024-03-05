@@ -1,12 +1,21 @@
 package com.khjin.tdd_practice.week2.lotto
 
 import com.khjin.tdd_practice.week2.lotto.exception.InsufficientMoneyException
-import com.khjin.tdd_practice.week2.lotto.exception.InvalidWinnerInputException
-import java.lang.NumberFormatException
 import kotlin.math.floor
-import kotlin.math.round
+
+/**
+ * 구매
+ * 게임 만들기
+ * 당첨번호 validation
+ * 당첨 확인
+ * 상금 계산
+ * 수익률 계산
+ */
 
 class Lotto {
+
+    private val lottoValidator: LottoValidator = LottoValidator()
+
     fun purchaseGames(price: Int, money: Int): List<List<Int>> {
         val result = mutableListOf<List<Int>>()
 
@@ -30,22 +39,11 @@ class Lotto {
     }
 
     fun parseWinnerInput(winnerInput: String): List<Int> {
-        try {
-            val result = winnerInput.split(LottoConstants.INPUT_DELIMITER).map{ it.trim().toInt() }
+        val numList = winnerInput.split(LottoConstants.INPUT_DELIMITER)
 
-            if(result.size != LottoConstants.GAME_SIZE)
-                throw InvalidWinnerInputException("당첨 번호는 총 ${LottoConstants.GAME_SIZE}개의 숫자로 이뤄져야 합니다")
+        lottoValidator.validateWinningNumberInput(numList)
 
-            for(num in result){
-                if(num !in LottoConstants.GAME_NUMBER_MIN..LottoConstants.GAME_NUMBER_MAX){
-                    throw InvalidWinnerInputException(
-                        "숫자는 ${LottoConstants.GAME_NUMBER_MIN}과 ${LottoConstants.GAME_NUMBER_MAX} 사이여야 합니다")
-                }
-            }
-
-            return result
-        }catch(nfe: NumberFormatException) {
-            throw InvalidWinnerInputException("유효하지 않은 당첨 번호입니다.\n당첨 번호는 쉼표로 구분된 숫자로만 입력해야 합니다.")        }
+        return numList.map{ it.trim().toInt() }
     }
 
     fun matchNumbers(winningNumbers: List<Int>, game: List<Int>): Int{
@@ -71,11 +69,11 @@ class Lotto {
         var result = 0
         for(unmatched in (0..<4)){
             val wonGames = gameResult[LottoConstants.GAME_SIZE - unmatched]
-            when(unmatched){
-                0 -> result += wonGames * LottoConstants.FIRST_PRIZE_MONEY
-                1 -> result += wonGames * LottoConstants.SECOND_PRIZE_MONEY
-                2 -> result += wonGames * LottoConstants.THIRD_PRIZE_MONEY
-                else -> result += wonGames * LottoConstants.FOURTH_PRIZE_MONEY
+            result += when(unmatched){
+                0 -> wonGames * LottoConstants.FIRST_PRIZE_MONEY
+                1 -> wonGames * LottoConstants.SECOND_PRIZE_MONEY
+                2 -> wonGames * LottoConstants.THIRD_PRIZE_MONEY
+                else -> wonGames * LottoConstants.FOURTH_PRIZE_MONEY
             }
         }
         return result
