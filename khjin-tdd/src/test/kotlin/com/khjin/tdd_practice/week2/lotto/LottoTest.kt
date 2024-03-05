@@ -1,6 +1,7 @@
 package com.khjin.tdd_practice.week2.lotto
 
 import com.khjin.tdd_practice.week2.WinningNumber
+import com.khjin.tdd_practice.week2.lotto.constants.LottoConstants
 import com.khjin.tdd_practice.week2.lotto.exception.InsufficientMoneyException
 import com.khjin.tdd_practice.week2.lotto.exception.InvalidWinnerInputException
 import org.junit.jupiter.api.Assertions.*
