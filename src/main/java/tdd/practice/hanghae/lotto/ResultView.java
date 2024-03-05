@@ -26,13 +26,21 @@ public class ResultView {
     }
 
     private void printWinningResult(int[] matchCount) {
+        int fifthMoney = Rank.valueOf(matchCount[3], false).getWinningMoney();
+        int fourthMoney = Rank.valueOf(matchCount[4], false).getWinningMoney();
+        int thirdMoney = Rank.valueOf(matchCount[5], false).getWinningMoney();
+        int firstMoney = Rank.valueOf(matchCount[6], false).getWinningMoney();
+
         System.out.println("당첨 통계");
         System.out.println("--------");
-        System.out.println("3개 일치 (" + (5000 * matchCount[3]) + "원)-" + matchCount[3] + "개");
-        System.out.println("4개 일치 (" + (50000 * matchCount[4]) + "원)-" + matchCount[4] + "개");
-        System.out.println("5개 일치 (" + (1500000 * matchCount[5]) + "원)-" + matchCount[5] + "개");
-        System.out.println("6개 일치 (" + (2000000000 * matchCount[6]) + "원)-" + matchCount[6] + "개");
-        int winningPrize = ( (5000 * matchCount[3]) + (50000 * matchCount[4]) + (1500000 * matchCount[5]) + (2000000000 * matchCount[6]) ) / this.lotto.getBuyAmount();
+        System.out.println("3개 일치 (" + fifthMoney + "원)-" + matchCount[3] + "개");
+        System.out.println("4개 일치 (" + fourthMoney + "원)-" + matchCount[4] + "개");
+        System.out.println("5개 일치 (" + thirdMoney + "원)-" + matchCount[5] + "개");
+        System.out.println("6개 일치 (" + firstMoney + "원)-" + matchCount[6] + "개");
+        int winningPrize = ((fifthMoney * matchCount[3]) +
+                            (fourthMoney * matchCount[4]) +
+                            (thirdMoney * matchCount[5]) +
+                            (firstMoney * matchCount[6])) / this.lotto.getBuyAmount();
         System.out.println("총 수익률은" + winningPrize + "입니다.");
     }
 

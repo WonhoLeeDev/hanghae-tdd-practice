@@ -56,4 +56,10 @@ public class LottoTest {
         Assertions.assertThat(lotto.getWinningResult().size()).isEqualTo(lotto.getBuyCount());
     }
 
+    @Test
+    void rankEnumValueOfTest() {
+        Rank rank = Rank.FIFTH;
+        Assertions.assertThat(Rank.valueOf(rank.getCountOfMatch(), false)).isEqualTo(rank);
+    }
+
 }
