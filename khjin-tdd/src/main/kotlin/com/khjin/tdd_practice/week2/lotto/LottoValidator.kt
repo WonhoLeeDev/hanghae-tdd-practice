@@ -1,6 +1,7 @@
 package com.khjin.tdd_practice.week2.lotto
 
 import com.khjin.tdd_practice.week2.lotto.constants.LottoConstants
+import com.khjin.tdd_practice.week2.lotto.exception.GameNumberOutOfRangeException
 import com.khjin.tdd_practice.week2.lotto.exception.InvalidWinnerInputException
 
 class LottoValidator {
@@ -15,10 +16,7 @@ class LottoValidator {
             if( !isNumeric(str) ) {
                 throw InvalidWinnerInputException("유효하지 않은 당첨 번호입니다.\n당첨 번호는 쉼표로 구분된 숫자로만 입력해야 합니다.")
             }else{
-                if(str.toInt() !in LottoConstants.GAME_NUMBER_MIN..LottoConstants.GAME_NUMBER_MAX){
-                    throw InvalidWinnerInputException(
-                        "숫자는 ${LottoConstants.GAME_NUMBER_MIN}과 ${LottoConstants.GAME_NUMBER_MAX} 사이여야 합니다")
-                }
+                validateGameNumber(str.toInt())
             }
         }
 
@@ -29,6 +27,14 @@ class LottoValidator {
         return str.toIntOrNull() != null
     }
 
+    fun validateGameNumber(num: Int): Boolean {
+        if(num !in LottoConstants.GAME_NUMBER_MIN..LottoConstants.GAME_NUMBER_MAX){
+            throw GameNumberOutOfRangeException(
+                "숫자는 ${LottoConstants.GAME_NUMBER_MIN}과 ${LottoConstants.GAME_NUMBER_MAX} 사이여야 합니다"
+            )
+        }
+        return true
+    }
 
 
 }

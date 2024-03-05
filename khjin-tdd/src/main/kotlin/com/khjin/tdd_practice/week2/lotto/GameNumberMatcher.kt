@@ -1,5 +1,7 @@
 package com.khjin.tdd_practice.week2.lotto
 
+import com.khjin.tdd_practice.week2.lotto.constants.LottoConstants
+
 class GameNumberMatcher {
     fun matchOneGame(winningNumbers: List<Int>, game: List<Int>): Int{
         var result = 0
@@ -18,6 +20,10 @@ class GameNumberMatcher {
         }
 
         return result
+    }
+
+    fun matchBonusNumber(bonusNumber: Int, game: List<Int>): Boolean {
+        return game.contains(bonusNumber)
     }
 
 }

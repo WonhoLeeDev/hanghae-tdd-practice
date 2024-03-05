@@ -2,6 +2,7 @@ package com.khjin.tdd_practice.week2.lotto
 
 import com.khjin.tdd_practice.week2.WinningNumber
 import com.khjin.tdd_practice.week2.lotto.constants.LottoConstants
+import com.khjin.tdd_practice.week2.lotto.exception.GameNumberOutOfRangeException
 import com.khjin.tdd_practice.week2.lotto.exception.InsufficientMoneyException
 import com.khjin.tdd_practice.week2.lotto.exception.InvalidWinnerInputException
 import org.junit.jupiter.api.Assertions.*
@@ -77,10 +78,10 @@ class LottoTest {
 
     @Test
     fun `the winning numbers should be between 1 and 45`() {
-        assertThrows(InvalidWinnerInputException::class.java){
+        assertThrows(GameNumberOutOfRangeException::class.java){
             winningNumber.parseWinnerInput("1,56,2,5,24,45")
         }
-        assertThrows(InvalidWinnerInputException::class.java){
+        assertThrows(GameNumberOutOfRangeException::class.java){
             winningNumber.parseWinnerInput("0,40,2,11,24,45")
         }
     }
