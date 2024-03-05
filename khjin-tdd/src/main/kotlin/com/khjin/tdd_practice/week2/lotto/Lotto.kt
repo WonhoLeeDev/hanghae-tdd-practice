@@ -1,85 +1,46 @@
 package com.khjin.tdd_practice.week2.lotto
 
-import com.khjin.tdd_practice.week2.lotto.exception.InsufficientMoneyException
-import kotlin.math.floor
-
-/**
- * 구매
- * 게임 만들기
- * 당첨번호 validation
- * 당첨 확인
- * 상금 계산
- * 수익률 계산
- */
+import com.khjin.tdd_practice.week2.WinningNumber
 
 class Lotto {
 
-    private val lottoValidator: LottoValidator = LottoValidator()
+    private val lottoUI = LottoUI()
+    private val lottoResultHandler = LottoResultHandler()
+    private val gameGenerator = GameGenerator()
+    private val winningNumber = WinningNumber()
+    private val gameNumberMatcher = GameNumberMatcher()
 
-    fun purchaseGames(price: Int, money: Int): List<List<Int>> {
-        val result = mutableListOf<List<Int>>()
+    fun run() {
 
-        if(price > money)
-            throw InsufficientMoneyException("돈이 충분하지 않습니다")
+        // 1. receive money input
+        val money = lottoUI.moneyInput()
 
-        for(i in 0..<money/price){
-            result.add(this.createGame())
-        }
-        return result
+        // 2. purchase games
+        val games = gameGenerator.purchaseGames(LottoConstants.GAME_PRICE, money)
+
+        // 3. print games
+        lottoUI.printGames(games)
+
+        // 4. receive winning number input
+        val winningNumberInput = lottoUI.winningNumberInput()
+
+        // 5. parse input
+        val winningNumbers = winningNumber.parseWinnerInput(winningNumberInput)
+
+        // 6. match all game numbers against winning number
+        val gameResult = gameNumberMatcher.matchAllGames(winningNumbers, games)
+
+        // 7. print game result
+        lottoUI.printGameResult(gameResult)
+
+        // 8. calculate and print profit rate
+        val profitRate = lottoResultHandler.calculateProfitRate(
+            purchase = games.size * LottoConstants.GAME_PRICE,
+            prize = lottoResultHandler.calculatePrizeMoney(gameResult)
+        )
+        lottoUI.printProfitRate(profitRate)
+
+
     }
 
-    fun createGame(): List<Int> {
-        val candidates = IntArray(LottoConstants.GAME_NUMBER_MAX - LottoConstants.GAME_NUMBER_MIN) {
-            it + LottoConstants.GAME_NUMBER_MIN
-        }
-        candidates.shuffle()
-        return candidates
-            .slice(0..<LottoConstants.GAME_SIZE)
-            .sorted()
-    }
-
-    fun parseWinnerInput(winnerInput: String): List<Int> {
-        val numList = winnerInput.split(LottoConstants.INPUT_DELIMITER)
-
-        lottoValidator.validateWinningNumberInput(numList)
-
-        return numList.map{ it.trim().toInt() }
-    }
-
-    fun matchNumbers(winningNumbers: List<Int>, game: List<Int>): Int{
-        var result = 0
-        for(num in game)
-            if (winningNumbers.contains(num))
-                result++
-
-        return result
-    }
-
-    fun runGames(winningNumbers: List<Int>, gameSet: List<List<Int>>): IntArray {
-        val result = IntArray(LottoConstants.GAME_SIZE+1)
-
-        for (game in gameSet){
-            result[matchNumbers(winningNumbers, game)]++
-        }
-
-        return result
-    }
-
-    fun calculatePrizeMoney(gameResult: IntArray): Int {
-        var result = 0
-        for(unmatched in (0..<4)){
-            val wonGames = gameResult[LottoConstants.GAME_SIZE - unmatched]
-            result += when(unmatched){
-                0 -> wonGames * LottoConstants.FIRST_PRIZE_MONEY
-                1 -> wonGames * LottoConstants.SECOND_PRIZE_MONEY
-                2 -> wonGames * LottoConstants.THIRD_PRIZE_MONEY
-                else -> wonGames * LottoConstants.FOURTH_PRIZE_MONEY
-            }
-        }
-        return result
-    }
-
-    fun calculateProfitRate(purchase: Int, prize: Int): Double {
-        return floor((prize-purchase).toDouble() / purchase.toDouble()*100) / 100
-    }
 }
