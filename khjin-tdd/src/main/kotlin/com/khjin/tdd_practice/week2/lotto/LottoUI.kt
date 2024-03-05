@@ -1,6 +1,6 @@
 package com.khjin.tdd_practice.week2.lotto
 
-import com.khjin.tdd_practice.week2.lotto.constants.LottoConstants
+import com.khjin.tdd_practice.week2.lotto.enums.Rank
 
 class LottoUI {
     fun moneyInput(): Int {
@@ -20,18 +20,19 @@ class LottoUI {
         return readln()
     }
 
-    fun printGameResult(gameResult: IntArray) {
-        for(unmatched in (0..<4).reversed()){
-            val matches = LottoConstants.GAME_SIZE - unmatched
-            val wonGames = gameResult[matches]
-            val prizeMoney = when(unmatched){
-                0 -> LottoConstants.FIRST_PRIZE_MONEY
-                1 -> LottoConstants.SECOND_PRIZE_MONEY
-                2 -> LottoConstants.THIRD_PRIZE_MONEY
-                else -> LottoConstants.FOURTH_PRIZE_MONEY
+    fun printGameResult(gameResult: Map<Rank, Int>) {
+        val messageBuilder = StringBuilder()
+        for(rank in Rank.entries.reversed()){
+            if(rank == Rank.MISS) continue
+
+            messageBuilder.append("${rank.getMatches()} 개 일치")
+            if(rank == Rank.SECOND){
+                messageBuilder.append(", 보너스 볼 일치")
             }
-            println("${matches}개 일치 (${prizeMoney}원) - $wonGames 개")
+            messageBuilder.append("(${rank.getPrizeMoney()}원) - ${gameResult[rank]}개\n")
+
         }
+        println(messageBuilder.toString())
     }
 
     fun printProfitRate(profitRate: Double) {
