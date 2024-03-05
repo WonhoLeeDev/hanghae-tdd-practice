@@ -1,28 +1,23 @@
 package com.khjin.tdd_practice.week2.lotto.enums
 
-enum class Rank {
-    FIRST(6,  2_000_000_000),
-    SECOND(5, true, 30_000_000),
-    THIRD(5, false,1_500_000),
-    FOURTH(4, 50_000),
-    FIFTH(3,  5_000),
-    MISS(0, 0);
+enum class Rank(
+    private val matches: Int,
+    private val isCheckBonusNumber: Boolean,
+    private val isBonusNumberMatch: Boolean?,
+    private val prizeMoney: Int
+) {
+    FIRST(6,  false, null, 2_000_000_000),
+    SECOND(5, true, true, 30_000_000),
+    THIRD(5, true, false,1_500_000),
+    FOURTH(4, false, null,50_000),
+    FIFTH(3,  false, null, 5_000),
+    MISS(0, false, null,0);
 
-    private val matches: Int?
-    private val isBonusNumberMatch: Boolean?
-    private val prizeMoney: Int?
-
-
-    constructor(matches: Int, isBonusNumberMatch: Boolean, prizeMoney: Int){
-        this.matches = matches
-        this.isBonusNumberMatch = isBonusNumberMatch
-        this.prizeMoney = prizeMoney
-
+    fun getPrizeMoney(): Int{
+        return this.prizeMoney
     }
-    constructor(matches: Int, prizeMoney: Int){
-        this.matches = matches
-        this.prizeMoney = prizeMoney
-        this.isBonusNumberMatch = null
+    fun getMatches(): Int{
+        return this.matches
     }
 
     companion object{
@@ -30,12 +25,12 @@ enum class Rank {
 
             for(r in entries){
                 if(r.matches == matches){
-                    if(r.isBonusNumberMatch == null){
-                        return r
-                    }else{
+                    if(r.isCheckBonusNumber){
                         if(r.isBonusNumberMatch == isBonusNumberMatch){
                             return r
                         }
+                    }else{
+                        return r
                     }
                 }
             }

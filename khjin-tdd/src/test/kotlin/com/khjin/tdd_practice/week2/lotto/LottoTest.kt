@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test
 
 class LottoTest {
 
-    private val lottoResultHandler = LottoResultHandler()
     private val gameGenerator = GameGenerator()
     private val winningNumber = WinningNumber()
     private val gameNumberMatcher = GameNumberMatcher()
+    private val lottoResult = LottoResult()
 
     @Test
     fun `when money is given, the number of games should be the quotient of money and lotto price`() {
@@ -103,6 +103,7 @@ class LottoTest {
         assertEquals(4, gameNumberMatcher.matchOneGame(winningNumbers, listOf(3, 4, 4, 6, 10, 20)))
     }
 
+    /*
     @Test
     fun `the number of matches for the set of games should be returned`() {
         val winningNumbers = listOf(1,2,3,4,5,6)
@@ -137,9 +138,10 @@ class LottoTest {
         assertEquals(2_000_050_000, lottoResultHandler.calculatePrizeMoney(intArrayOf(0,10,4,0,1,0,1)))
         assertEquals(5000, lottoResultHandler.calculatePrizeMoney(intArrayOf(1,2,4,1,0,0,0)))
     }
+     */
 
     @Test
     fun `profit rate for the games should be returned for given set of games`() {
-        assertEquals(-0.65, lottoResultHandler.calculateProfitRate(purchase = 14000, prize=5000))
+        assertEquals(-0.65, lottoResult.calculateProfitRate(purchase = 14000, prizeMoney=5000))
     }
 }

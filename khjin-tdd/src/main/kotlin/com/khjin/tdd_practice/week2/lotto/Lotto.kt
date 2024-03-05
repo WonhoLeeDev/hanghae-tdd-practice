@@ -6,10 +6,10 @@ import com.khjin.tdd_practice.week2.lotto.constants.LottoConstants
 class Lotto {
 
     private val lottoUI = LottoUI()
-    private val lottoResultHandler = LottoResultHandler()
+    private val lottoResult = LottoResult()
     private val gameGenerator = GameGenerator()
     private val winningNumber = WinningNumber()
-    private val gameNumberMatcher = GameNumberMatcher()
+    private val lottoValidator = LottoValidator()
 
     fun run() {
 
@@ -22,22 +22,25 @@ class Lotto {
         // 3. print games
         lottoUI.printGames(games)
 
-        // 4. receive winning number input
+        // 4. receive winning number and bonus number
         val winningNumberInput = lottoUI.winningNumberInput()
+        val bonusNumber = lottoUI.bonusNumberInput()
 
-        // 5. parse input
+        // 5. parse and validate input
         val winningNumbers = winningNumber.parseWinnerInput(winningNumberInput)
+        lottoValidator.validateGameNumber(bonusNumber)
 
-        // 6. match all game numbers against winning number
-        val gameResult = gameNumberMatcher.matchAllGames(winningNumbers, games)
+        // 6. get result
+        val gameResult = lottoResult.getResult(winningNumbers, bonusNumber, games)
 
         // 7. print game result
         lottoUI.printGameResult(gameResult)
 
         // 8. calculate and print profit rate
-        val profitRate = lottoResultHandler.calculateProfitRate(
+        val totalPrizeMoney = lottoResult.calculateTotalPrizeMoney(gameResult)
+        val profitRate = lottoResult.calculateProfitRate(
             purchase = games.size * LottoConstants.GAME_PRICE,
-            prize = lottoResultHandler.calculatePrizeMoney(gameResult)
+            prizeMoney = totalPrizeMoney
         )
         lottoUI.printProfitRate(profitRate)
 
