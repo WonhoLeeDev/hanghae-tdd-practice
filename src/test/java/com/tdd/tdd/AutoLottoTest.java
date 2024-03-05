@@ -19,13 +19,16 @@ class AutoLottoTest {
 
     @BeforeEach
     public void beforeEach(){
-        String purchase = "14000\n";
-        String answer = "1, 2, 3, 4, 5, 6";
+        String purchase = "150000\n";
+        String answer = "28, 32, 30, 9, 40, 11\n";
+        String bonusNumber="7\n";
         byte[] purchaseBytes = purchase.getBytes();
         byte[] answerBytes = answer.getBytes();
-        byte[] inputs = new byte[purchaseBytes.length + answerBytes.length];
+        byte[] bonusNumberBytes = bonusNumber.getBytes();
+        byte[] inputs = new byte[purchaseBytes.length + answerBytes.length+bonusNumberBytes.length];
         System.arraycopy(purchaseBytes, 0, inputs, 0, purchaseBytes.length);
         System.arraycopy(answerBytes, 0, inputs, purchaseBytes.length, answerBytes.length);
+        System.arraycopy(bonusNumberBytes, 0, inputs, purchaseBytes.length + answerBytes.length, bonusNumberBytes.length);
         ByteArrayInputStream testIn = new ByteArrayInputStream(inputs);
         System.setIn(testIn);
         inputView = new InputView(System.in);
@@ -34,9 +37,10 @@ class AutoLottoTest {
     public void generateLotto(){
         int buyCount = inputView.getBuyCount();
         Map<Integer, List<Integer>> lottoNumbers = autoLotto.autoLottoPrint(buyCount);
-        assertThat(lottoNumbers.size()).isEqualTo(14);
+        assertThat(lottoNumbers.size()).isEqualTo(150);
         Set<Integer> winningNumbers = inputView.printLottoWinningNumbers();
-        Map<Integer, Integer> result = calculator.calculate(lottoNumbers, winningNumbers);
+        Integer bonusNumber = inputView.printBonusNumber();
+        Map<LottoResult, Integer> result = calculator.calculate(lottoNumbers, winningNumbers, bonusNumber);
         resultView.printResult(buyCount, result);
     }
 

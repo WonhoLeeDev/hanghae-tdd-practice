@@ -32,4 +32,8 @@ public class InputView {
     }
 
 
+    public Integer printBonusNumber() {
+        System.out.println("\n보너스 볼을 입력해 주세요.");
+        return sc.nextInt();
+    }
 }

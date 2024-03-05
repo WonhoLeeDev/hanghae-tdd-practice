@@ -1,14 +1,23 @@
 package com.tdd.tdd;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ResultView {
-    public void printResult(int buyCount, Map<Integer, Integer> result) {
+    public void printResult(int buyCount, Map<LottoResult, Integer> resultMap) {
         int totalResult =0 ;
-        for (Integer key : result.keySet()) {
-            int amount = 5000*(key-2);
-            System.out.printf("%d개 일치 (%d원)- %d개\n", key,amount , result.get(key));
-            totalResult += amount*(result.get(key));
+        TreeMap<LottoResult, Integer> sortedMap = new TreeMap<>(Collections.reverseOrder());
+        sortedMap.putAll(resultMap);
+        for (LottoResult result : sortedMap.keySet()) {
+            int correct = result.getCorrect();
+            int amount = result.getRewardMoney();
+            if(result==LottoResult.SECOND_BONUS){
+                System.out.printf("%d개 일치, 보너스 볼 일치(%d원)- %d개\n", correct, amount , resultMap.get(result));
+            }else{
+                System.out.printf("%d개 일치 (%d원)- %d개\n", correct, amount , resultMap.get(result));
+            }
+            totalResult += amount*(resultMap.get(result));
         }
         calculateRateOfReturn(buyCount, totalResult);
     }
