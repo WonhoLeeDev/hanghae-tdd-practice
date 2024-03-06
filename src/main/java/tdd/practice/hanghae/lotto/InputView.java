@@ -12,11 +12,11 @@ public class InputView {
     private static final Scanner sc = new Scanner(System.in);
 
 
-    public Lotto buy() {
+    public Lotto buyAutomatically() {
         System.out.println("구매금액을 입력해주세요.");
         int buyAmount = sc.nextInt();
         this.lotto = new Lotto(buyAmount);
-        this.lotto.buy();
+        this.lotto.buyAutomatically();
 
         return this.lotto;
     }
@@ -29,6 +29,7 @@ public class InputView {
         String[] processedNumbers = processInputNumbers(numbers);
         this.lotto.setWinningNumbers(getWinningNumbers(processedNumbers));
         this.lotto.setWinningResult();
+        this.lotto.setWinningResult2();
     }
 
     private static List<Integer> getWinningNumbers(String[] processedNumbers) {

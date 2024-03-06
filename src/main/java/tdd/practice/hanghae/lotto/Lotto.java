@@ -1,8 +1,6 @@
 package tdd.practice.hanghae.lotto;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -10,15 +8,19 @@ import java.util.stream.IntStream;
 public class Lotto {
     private final int LOTTO_PRICE = 1000;
 
-    int buyAmount;
+    private int buyAmount;
 
-    int buyCount;
+    private int buyCount;
 
-    List<List<Integer>> boughtLottoList;
+    private List<List<Integer>> boughtLottoList;
 
-    List<List<Integer>> winningResult;
+    private List<List<Integer>> winningResult;
 
-    List<Integer> winningNumbers;
+    private Map<Rank, Integer> winningResult2 = new HashMap<>();
+
+    private List<Integer> winningNumbers;
+
+    private int bonusNumber;
 
     public Lotto(int buyAmount) {
         this.buyAmount = buyAmount;
@@ -39,6 +41,34 @@ public class Lotto {
                 .toList();
     }
 
+    public void setWinningResult2() {
+        for (List<Integer> boughtLotto : this.boughtLottoList) {
+            int winningCount = getWinningCount(boughtLotto);
+
+            boolean matchBonus = false;
+            // winnningCount 4개 2등체크
+            if(winningCount == 4 && boughtLotto.contains(this.bonusNumber)) {
+                matchBonus = true;
+            }
+
+            Rank rank = Rank.valueOf(getWinningCount(boughtLotto), matchBonus);
+            this.winningResult2.merge(rank, 1, Integer::sum);
+        }
+        System.out.println("result : " + this.winningResult2);
+    }
+
+    private int getWinningCount(List<Integer> boughtLotto) {
+        return (int) boughtLotto.stream()
+                .filter(winningNumbers::contains)
+                .count();
+    }
+
+    public List<Integer> matchWinningNumbers2(List<Integer> boughtLotto) {
+        return boughtLotto.stream()
+                .filter(lotto -> winningNumbers.stream().anyMatch(Predicate.isEqual(lotto)))
+                .toList();
+    }
+
     public List<List<Integer>> getWinningResult() {
         return winningResult;
     }
@@ -50,8 +80,20 @@ public class Lotto {
         return winningNumbers;
     }
 
-    public void buy() {
+    public void setBonusNumber(int bonusNumber) {
+        this.bonusNumber = bonusNumber;
+    }
+
+    public int getBonusNumber() {
+        return bonusNumber;
+    }
+
+    public void buyAutomatically() {
         this.boughtLottoList = this.generateRandomLottoNumbers();
+    }
+
+    public void buyManually(List<List<Integer>> numbers) {
+        this.boughtLottoList = numbers;
     }
 
     public List<List<Integer>> getBoughtLottoList() {
