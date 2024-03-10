@@ -28,8 +28,6 @@ public class InputView {
 
         String[] processedNumbers = processInputNumbers(numbers);
         this.lotto.setWinningNumbers(getWinningNumbers(processedNumbers));
-        this.lotto.setWinningResult();
-        this.lotto.setWinningResult2();
     }
 
     private static List<Integer> getWinningNumbers(String[] processedNumbers) {
@@ -43,5 +41,11 @@ public class InputView {
     private static String[] processInputNumbers(String numbers) {
         String tirmNumbers = numbers.replaceAll(" ","");
         return tirmNumbers.split(",");
+    }
+
+    public void inputBonusNumber() {
+        System.out.println("보너스 볼을 입력해 주세요.");
+        this.lotto.setBonusNumber(sc.nextInt());
+        this.lotto.setWinningResults();
     }
 }

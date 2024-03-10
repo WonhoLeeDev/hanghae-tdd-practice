@@ -29,56 +29,59 @@ public class LottoTest {
     }
 
     @Test
-    @DisplayName("get random lotto numbers list by lotto buy count.")
+    void generateLottoNumbersSizeTest() {
+        Assertions.assertThat(lotto.getShuffledRandomLottoNumbers().size()).isEqualTo(6);
+    }
+
+    @Test
     void getLottoNumbersListTest() {
         List<List<Integer>> lottoBuyList = lotto.generateRandomLottoNumbers();
         Assertions.assertThat(lottoBuyList).size().isEqualTo(lotto.getBuyCount());
     }
 
-    @Test
-    @DisplayName("match lotto numbers with winning numbers")
-    void matchWinningNumbersTest() {
-        lotto.buyAutomatically();
-        lotto.setWinningNumbers(Lotto.getShuffledRandomLottoNumbers());
-        List<Integer> matchedNumbers = lotto.matchWinningNumbers(lotto.getBoughtLottoList().get(0));
-
-        List<Integer> matchWinningNumbers = lotto.getBoughtLottoList().get(0).stream()
-                        .filter(boughtLotto -> lotto.getWinningNumbers().stream().anyMatch(Predicate.isEqual(boughtLotto)))
-                        .toList();
-
-        Assertions.assertThat(matchWinningNumbers.containsAll(matchedNumbers)).isTrue();
-    }
-
-    @Test
-    @DisplayName("get winning numbers match result")
-    void setWinningResultTest() {
-        lotto.buyAutomatically();
-        lotto.setWinningNumbers(Lotto.getShuffledRandomLottoNumbers());
-        lotto.setWinningResult();
-        Assertions.assertThat(lotto.getWinningResult().size()).isEqualTo(lotto.getBuyCount());
-    }
 
     @Test
     void rankEnumValueOfTest() {
-        Rank rank = Rank.FIFTH;
-        Assertions.assertThat(Rank.valueOf(rank.getCountOfMatch(), false)).isEqualTo(rank);
+        Assertions.assertThat(Rank.valueOf(0, false)).isEqualTo(Rank.MISS);
+        Assertions.assertThat(Rank.valueOf(1, false)).isEqualTo(Rank.MISS);
+        Assertions.assertThat(Rank.valueOf(2, false)).isEqualTo(Rank.MISS);
+        Assertions.assertThat(Rank.valueOf(3, false)).isEqualTo(Rank.FIFTH);
+        Assertions.assertThat(Rank.valueOf(4, false)).isEqualTo(Rank.FOURTH);
+        Assertions.assertThat(Rank.valueOf(5, false)).isEqualTo(Rank.THIRD);
+        Assertions.assertThat(Rank.valueOf(5, true)).isEqualTo(Rank.SECOND);
+        Assertions.assertThat(Rank.valueOf(6, false)).isEqualTo(Rank.FIRST);
     }
 
+    @Test
+    void getWinningCountTest() {
+        lotto.setWinningNumbers(Arrays.asList(1,2,3,4,5,6));
+        Assertions.assertThat(lotto.getWinningCount(Arrays.asList(7,8,9,10,12,13))).isEqualTo(0);
+        Assertions.assertThat(lotto.getWinningCount(Arrays.asList(1,2,3,11,12,13))).isEqualTo(3);
+        Assertions.assertThat(lotto.getWinningCount(Arrays.asList(1,2,3,4,12,13))).isEqualTo(4);
+        Assertions.assertThat(lotto.getWinningCount(Arrays.asList(1,2,3,4,5,13))).isEqualTo(5);
+        Assertions.assertThat(lotto.getWinningCount(Arrays.asList(1,2,3,4,5,6))).isEqualTo(6);
+    }
+
+    @Test
+    void getRankTest() {
+        lotto.setWinningNumbers(Arrays.asList(1,2,3,4,5,6));
+        Assertions.assertThat(lotto.getRank(Arrays.asList(7,8,9,10,12,13))).isEqualTo(Rank.MISS);
+        Assertions.assertThat(lotto.getRank(Arrays.asList(1,2,3,11,12,13))).isEqualTo(Rank.FIFTH);
+        Assertions.assertThat(lotto.getRank(Arrays.asList(1,2,3,4,12,13))).isEqualTo(Rank.FOURTH);
+        Assertions.assertThat(lotto.getRank(Arrays.asList(1,2,3,4,5,13))).isEqualTo(Rank.THIRD);
+        Assertions.assertThat(lotto.getRank(Arrays.asList(1,2,3,4,5,6))).isEqualTo(Rank.FIRST);
+    }
+
+    @Test
     void secondWinningTest() {
-        //given
-        List<Integer> manualBuyNumbers = Arrays.asList(1,2,3,11,12,13);
+        List<Integer> manualBuyNumbers = Arrays.asList(1,2,3,4,12,13);
         lotto.buyManually(List.of(manualBuyNumbers));
         lotto.setWinningNumbers(Arrays.asList(1,2,3,4,5,6));
-
-        //2등숫자가 추가로 주어졌을때(bonus number)
         lotto.setBonusNumber(13);
 
-        //when
-        //4개 맞은애들 중 bonus number가 있는지 확인
-        lotto.checkSecondWinning();
+        lotto.setWinningResults();
 
-        //then
-        //성공?
+        Assertions.assertThat(lotto.getWinningResults().get(Rank.SECOND)).isEqualTo(1);
     }
 
 }

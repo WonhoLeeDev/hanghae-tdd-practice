@@ -31,6 +31,16 @@ public enum Rank {
         return Arrays.stream(values())
                 .filter(rank -> rank.countOfMatch == countOfMatch)
                 .findFirst()
+                .map(rank -> getRank(countOfMatch, matchBonus, rank))
                 .orElse(MISS);
     }
+
+    private static Rank getRank(int countOfMatch, boolean matchBonus, Rank rank) {
+        if(countOfMatch == 5) {
+            return matchBonus ? SECOND : THIRD;
+        }
+        return rank;
+    }
+
+
 }

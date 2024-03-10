@@ -10,6 +10,7 @@ public class main {
         resultView.getBoughtLottoList();
 
         inputView.inputWinningNumbers();
+        inputView.inputBonusNumber();
         resultView.getWinningResult();
     }
 }

@@ -16,7 +16,7 @@ public class Lotto {
 
     private List<List<Integer>> winningResult;
 
-    private Map<Rank, Integer> winningResult2 = new HashMap<>();
+    private Map<Rank, Integer> winningResults = new HashMap<>();
 
     private List<Integer> winningNumbers;
 
@@ -35,38 +35,30 @@ public class Lotto {
         return buyCount;
     }
 
-    public void setWinningResult() {
-        this.winningResult = this.boughtLottoList.stream()
-                .map(this::matchWinningNumbers)
-                .toList();
-    }
-
-    public void setWinningResult2() {
+    public void setWinningResults() {
         for (List<Integer> boughtLotto : this.boughtLottoList) {
-            int winningCount = getWinningCount(boughtLotto);
-
-            boolean matchBonus = false;
-            // winnningCount 4개 2등체크
-            if(winningCount == 4 && boughtLotto.contains(this.bonusNumber)) {
-                matchBonus = true;
-            }
-
-            Rank rank = Rank.valueOf(getWinningCount(boughtLotto), matchBonus);
-            this.winningResult2.merge(rank, 1, Integer::sum);
+            this.winningResults.merge(getRank(boughtLotto), 1, Integer::sum);
         }
-        System.out.println("result : " + this.winningResult2);
     }
 
-    private int getWinningCount(List<Integer> boughtLotto) {
+    public Rank getRank(List<Integer> boughtLotto) {
+        int winningCount = getWinningCount(boughtLotto);
+        boolean matchBonus = false;
+        if(winningCount == 4 && boughtLotto.contains(this.bonusNumber)) {
+            winningCount++;
+            matchBonus = true;
+        }
+        return Rank.valueOf(winningCount, matchBonus);
+    }
+
+    public Map<Rank, Integer> getWinningResults() {
+        return winningResults;
+    }
+
+    public int getWinningCount(List<Integer> boughtLotto) {
         return (int) boughtLotto.stream()
                 .filter(winningNumbers::contains)
                 .count();
-    }
-
-    public List<Integer> matchWinningNumbers2(List<Integer> boughtLotto) {
-        return boughtLotto.stream()
-                .filter(lotto -> winningNumbers.stream().anyMatch(Predicate.isEqual(lotto)))
-                .toList();
     }
 
     public List<List<Integer>> getWinningResult() {
@@ -128,9 +120,4 @@ public class Lotto {
         return this.LOTTO_PRICE;
     }
 
-    public List<Integer> matchWinningNumbers(List<Integer> boughtLotto) {
-        return boughtLotto.stream()
-                .filter(lotto -> winningNumbers.stream().anyMatch(Predicate.isEqual(lotto)))
-                .toList();
-    }
 }
