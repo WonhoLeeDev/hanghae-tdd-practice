@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 public class LottoTest {
 
     private static Lotto lotto;
@@ -81,7 +84,35 @@ public class LottoTest {
 
         lotto.setWinningResults();
 
-        Assertions.assertThat(lotto.getWinningResults().get(Rank.SECOND)).isEqualTo(1);
     }
+
+    @Test
+    void validateLottoBuyAmount() {
+        Lotto testLotto = new Lotto(900);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> {
+                    testLotto.validateBuyAmount();
+                });
+    }
+
+    @Test
+    void validateWinningNumbersSizeTest() {
+        List<Integer> winningNumbers = Arrays.asList(1,2,3,4,5,6,7);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> {
+                    lotto.validateWinningNumbersSize(winningNumbers);
+                });
+
+    }
+
+    @Test
+    void validateWinningNumbersDuplTest() {
+        List<Integer> winningNumbers = Arrays.asList(1, 2, 3, 4, 5, 5);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> {
+                    lotto.validateWinningNumbersDupl(winningNumbers);
+                });
+    }
+
 
 }

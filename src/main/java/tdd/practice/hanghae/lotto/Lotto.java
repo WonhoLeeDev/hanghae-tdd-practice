@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Lotto {
-    private final int LOTTO_PRICE = 1000;
+    private static final int LOTTO_PRICE = 1000;
 
     private int buyAmount;
 
@@ -81,10 +81,12 @@ public class Lotto {
     }
 
     public void buyAutomatically() {
+        this.validateBuyAmount();
         this.boughtLottoList = this.generateRandomLottoNumbers();
     }
 
     public void buyManually(List<List<Integer>> numbers) {
+        this.validateBuyAmount();
         this.boughtLottoList = numbers;
     }
 
@@ -118,6 +120,35 @@ public class Lotto {
 
     public int getLottoPrice() {
         return this.LOTTO_PRICE;
+    }
+
+    public void validateBuyAmount() {
+        if (this.buyAmount < Lotto.LOTTO_PRICE) {
+            throw new IllegalArgumentException("금액 부족");
+        }
+    }
+
+    public void validateWinningNumbers(List<Integer> winningNumbers) {
+        validateWinningNumbersSize(winningNumbers);
+
+        validateWinningNumbersDupl(winningNumbers);
+    }
+
+    public void validateWinningNumbersDupl(List<Integer> winningNumbers) {
+        Set<Integer> winningNumbersSet = Set.copyOf(winningNumbers);
+        if (winningNumbersSet.size() != 6) {
+            throw new IllegalArgumentException("당첨번호 중복");
+        }
+    }
+
+    public void validateWinningNumbersSize(List<Integer> WinningNumbers) {
+        if (WinningNumbers.size() > 6) {
+            throw new IllegalArgumentException("당첨번호 갯수 초과");
+        }
+
+        if (WinningNumbers.size() < 6) {
+            throw new IllegalArgumentException("당첨번호 갯수 부족");
+        }
     }
 
 }
